@@ -2,8 +2,9 @@ import { Heart, ExternalLink, Music2 } from "lucide-react";
 import { songLink, type Song } from "@/data/moods";
 import { useFavourites } from "@/context/favourites";
 import { cn } from "@/lib/utils";
+import { AddToPlaylist } from "./AddToPlaylist";
 
-export function SongCard({ song }: { song: Song }) {
+export function SongCard({ song, extra }: { song: Song; extra?: React.ReactNode }) {
   const { isFav, toggle } = useFavourites();
   const fav = isFav(song.id);
   return (
@@ -16,6 +17,7 @@ export function SongCard({ song }: { song: Song }) {
           <h3 className="truncate text-lg font-semibold">{song.title}</h3>
           <p className="truncate text-sm text-muted-foreground">{song.artist}</p>
         </div>
+        <AddToPlaylist songId={song.id} />
         <button
           onClick={() => toggle(song)}
           aria-pressed={fav}
@@ -35,6 +37,7 @@ export function SongCard({ song }: { song: Song }) {
         Listen on Spotify <ExternalLink className="h-3.5 w-3.5" aria-hidden />
         <span className="sr-only">(opens in new tab)</span>
       </a>
+      {extra}
     </article>
   );
 }

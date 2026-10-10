@@ -116,3 +116,5 @@ export const getMood = (id: string) => MOODS.find((m) => m.id === id);
 /** Spotify search URLs are always valid, even without track IDs. */
 export const songLink = (song: Song) =>
   `https://open.spotify.com/search/${encodeURIComponent(`${song.title} ${song.artist}`)}`;
+
+export const findSong = (id: string) => MOODS.flatMap((m) => m.songs).find((s) => s.id === id);

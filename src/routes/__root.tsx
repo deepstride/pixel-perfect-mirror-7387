@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FavouritesProvider } from "@/context/favourites";
 import { Nav } from "@/components/Nav";
+import { AuthProvider } from "@/hooks/useAuth";
 
 function NotFoundComponent() {
   return (
@@ -122,10 +123,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <FavouritesProvider>
+      <AuthProvider><FavouritesProvider>
         <Nav />
         <main className="pb-20"><Outlet /></main>
-      </FavouritesProvider>
+      </FavouritesProvider></AuthProvider>
     </QueryClientProvider>
   );
 }
