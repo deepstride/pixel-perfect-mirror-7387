@@ -21,7 +21,7 @@ export async function searchItunes(term: string, limit = 50, signal?: AbortSigna
     limit: String(limit),
     country: "US",
   })}`;
-  const res = await fetch(url, { signal });
+  const res = await fetch(url, signal ? { signal } : {});
   if (!res.ok) throw new Error(`Music catalogue unavailable (${res.status})`);
   const json = (await res.json()) as { results?: ItunesTrack[] };
   return (json.results ?? [])

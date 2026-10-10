@@ -5,13 +5,13 @@ export interface Song {
   title: string;
   artist: string;
   why: string;
-  album?: string;
-  genre?: string;
-  artwork?: string;
+  album?: string | undefined;
+  genre?: string | undefined;
+  artwork?: string | undefined;
   /** 30-second preview from the catalogue; absent when none is offered. */
-  previewUrl?: string;
+  previewUrl?: string | undefined;
   /** Official store/listening page. */
-  link?: string;
+  link?: string | undefined;
 }
 
 export interface Mood {
