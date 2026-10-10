@@ -16,14 +16,19 @@ export const GENRES = [
 export type GenreId = (typeof GENRES)[number]["id"];
 
 /** Search phrases per mood; rotated so "Discover More" explores new parts of the catalogue. */
+/** Search seeds per mood (artists known for the mood + mood phrases), rotated so "Discover More" explores new parts of the catalogue. */
 export const MOOD_TERMS: Record<MoodId, string[]> = {
-  happy: ["happy", "sunshine", "feel good", "good vibes", "summer", "dance party", "smile", "celebrate"],
-  sad: ["sad", "heartbreak", "lonely", "tears", "missing you", "rainy day", "broken", "goodbye"],
-  calm: ["calm", "peaceful", "relax", "chill", "ocean", "meditation", "slow", "dreams"],
-  angry: ["angry", "rage", "fight", "scream", "fire", "revenge", "unstoppable", "break"],
-  energetic: ["energy", "workout", "run", "power", "pump up", "adrenaline", "jump", "hype"],
-  tired: ["sleep", "lullaby", "night", "tired", "dreaming", "soft", "moonlight", "rest"],
+  happy: ["Pharrell Williams", "feel good", "Lizzo", "Bruno Mars", "sunshine", "Harry Styles", "Dua Lipa", "good vibes", "Katy Perry", "Earth Wind & Fire", "Jason Mraz", "happy"],
+  sad: ["Adele", "heartbreak", "Lewis Capaldi", "Billie Eilish", "Phoebe Bridgers", "lonely", "Sam Smith", "Olivia Rodrigo", "Bon Iver", "missing you", "Coldplay", "Daniel Caesar"],
+  calm: ["Norah Jones", "peaceful", "Ludovico Einaudi", "Jack Johnson", "chill", "Khruangbin", "Rex Orange County", "relax", "Cigarettes After Sex", "Novo Amor", "Tom Misch", "calm"],
+  angry: ["Linkin Park", "Rage Against the Machine", "rage", "Slipknot", "Metallica", "Eminem", "Paramore", "System of a Down", "Bring Me the Horizon", "Kendrick Lamar", "Foo Fighters", "fight"],
+  energetic: ["workout", "The Weeknd", "Calvin Harris", "Imagine Dragons", "Avicii", "pump up", "Macklemore", "Doja Cat", "David Guetta", "Queen", "Travis Scott", "energy"],
+  tired: ["lullaby", "Lana Del Rey", "Frank Ocean", "sleep", "Mac DeMarco", "Clairo", "beabadoobee", "night", "Bonobo", "Joji", "Sufjan Stevens", "moonlight"],
 };
+
+/** Catalogue noise that never makes a good recommendation. */
+export const isNoise = (s: Song) =>
+  /karaoke|tribute|kids|nursery|elmo|sesame|in the style of|made famous|cover version|workout mix|\(remix\)|8-bit/i.test(`${s.title} ${s.artist} ${s.album ?? ""}`);
 
 const REASONS: Record<MoodId, string[]> = {
   happy: ["Bright and upbeat to keep your good mood glowing.", "A feel-good groove that matches your sunny energy.", "Light, joyful and easy to sing along to."],
@@ -63,7 +68,7 @@ export function pickFresh(pool: Song[], seen: Set<string>, n = BATCH_SIZE, rand:
   for (const s of shuffled) {
     const a = s.artist.toLowerCase();
     const t = s.title.toLowerCase();
-    if (seen.has(s.id) || artists.has(a) || titles.has(t)) continue;
+    if (isNoise(s) || seen.has(s.id) || artists.has(a) || titles.has(t)) continue;
     artists.add(a);
     titles.add(t);
     out.push(s);
