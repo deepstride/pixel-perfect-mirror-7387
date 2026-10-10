@@ -8,6 +8,13 @@
       "when": 1791608432079,
       "tag": "0000_profiles_playlists",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791609146379,
+      "tag": "0001_playlist_song_snapshot",
+      "breakpoints": true
     }
   ]
 }

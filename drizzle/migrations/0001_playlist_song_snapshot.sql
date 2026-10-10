@@ -1,0 +1,1 @@
+ALTER TABLE public.playlist_songs ADD COLUMN song jsonb;
