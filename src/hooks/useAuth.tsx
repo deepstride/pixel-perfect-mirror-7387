@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const displayName =
-    (session?.user.user_metadata?.display_name as string | undefined) ??
+    (session?.user.user_metadata?.['display_name'] as string | undefined) ??
     session?.user.email?.split("@")[0] ??
     null;
 
