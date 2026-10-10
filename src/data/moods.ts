@@ -5,6 +5,13 @@ export interface Song {
   title: string;
   artist: string;
   why: string;
+  album?: string;
+  genre?: string;
+  artwork?: string;
+  /** 30-second preview from the catalogue; absent when none is offered. */
+  previewUrl?: string;
+  /** Official store/listening page. */
+  link?: string;
 }
 
 export interface Mood {
@@ -115,6 +122,6 @@ export const getMood = (id: string) => MOODS.find((m) => m.id === id);
 
 /** Spotify search URLs are always valid, even without track IDs. */
 export const songLink = (song: Song) =>
-  `https://open.spotify.com/search/${encodeURIComponent(`${song.title} ${song.artist}`)}`;
+  song.link ?? `https://open.spotify.com/search/${encodeURIComponent(`${song.title} ${song.artist}`)}`;
 
 export const findSong = (id: string) => MOODS.flatMap((m) => m.songs).find((s) => s.id === id);
