@@ -17,8 +17,10 @@ export function recommend(
   const pool = [...fresh];
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(rand() * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
+    const t = pool[i]!;
+    pool[i] = pool[j]!;
+    pool[j] = t;
   }
-  const activity = mood.activities[Math.floor(rand() * mood.activities.length)];
+  const activity = mood.activities[Math.floor(rand() * mood.activities.length)] ?? "";
   return { songs: pool.slice(0, BATCH_SIZE), activity };
 }
