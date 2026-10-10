@@ -4,6 +4,7 @@ import { MOODS, type MoodId, type Song } from "@/data/moods";
 import { recommend } from "@/lib/recommend";
 import { SongCard } from "./SongCard";
 import { cn } from "@/lib/utils";
+import { MOOD_IMAGES } from "@/data/moodImages";
 
 type State =
   | { status: "idle" }
@@ -30,9 +31,9 @@ export function MoodFinder() {
   const current = MOODS.find((m) => m.id === mood);
 
   return (
-    <section aria-labelledby="feel" className="mx-auto w-full max-w-5xl px-4">
+    <section aria-labelledby="feel" className="mx-auto w-full max-w-6xl px-4">
       <h2 id="feel" className="text-center text-3xl font-medium sm:text-4xl">How are you feeling today?</h2>
-      <div role="radiogroup" aria-labelledby="feel" className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div role="radiogroup" aria-labelledby="feel" className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3">
         {MOODS.map((m) => {
           const active = m.id === mood;
           return (
@@ -42,13 +43,19 @@ export function MoodFinder() {
               aria-checked={active}
               onClick={() => { setMood(m.id); setState({ status: "idle" }); }}
               className={cn(
-                "glass rounded-2xl p-5 text-left transition duration-300 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-ring",
-                active && "glow bg-secondary",
+                "group relative aspect-[4/5] overflow-hidden rounded-3xl border text-left transition duration-500 hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-ring sm:aspect-[4/3]",
+                active ? "glow scale-[1.02]" : "opacity-90 hover:opacity-100",
               )}
             >
-              <span className="text-3xl" aria-hidden>{m.emoji}</span>
-              <span className="mt-2 block text-lg font-semibold">{m.label}</span>
-              <span className="block text-sm text-muted-foreground">{m.blurb}</span>
+              <img src={MOOD_IMAGES[m.id]} alt="" width={816} height={816} loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+              <div className="relative flex h-full flex-col justify-end p-4 sm:p-5">
+                <span className="text-2xl sm:text-3xl" aria-hidden>{m.emoji}</span>
+                <span className="mt-1 block font-display text-xl font-semibold sm:text-2xl">{m.label}</span>
+                <span className="block text-xs text-foreground/80 sm:text-sm">{m.blurb}</span>
+              </div>
+              {active && <span className="absolute right-3 top-3 rounded-full bg-gradient-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground">Selected</span>}
             </button>
           );
         })}
@@ -76,7 +83,11 @@ export function MoodFinder() {
         )}
         {state.status === "done" && current && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-medium">Your {current.label.toLowerCase()} soundtrack {current.emoji}</h2>
+            <div className="glow relative h-40 overflow-hidden rounded-3xl sm:h-52">
+              <img src={MOOD_IMAGES[current.id]} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-transparent" />
+              <h2 className="relative flex h-full items-end p-6 text-2xl font-medium sm:text-3xl">Your {current.label.toLowerCase()} soundtrack {current.emoji}</h2>
+            </div>
             <div className="grid gap-4 md:grid-cols-3">
               {state.songs.map((s) => <SongCard key={s.id} song={s} />)}
             </div>
