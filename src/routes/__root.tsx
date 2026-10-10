@@ -15,6 +15,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FavouritesProvider } from "@/context/favourites";
 import { Nav } from "@/components/Nav";
 import { AuthProvider } from "@/hooks/useAuth";
+import { PlayerProvider } from "@/context/player";
+import { MiniPlayer } from "@/components/MiniPlayer";
 
 function NotFoundComponent() {
   return (
@@ -123,10 +125,10 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <AuthProvider><FavouritesProvider>
+      <AuthProvider><FavouritesProvider><PlayerProvider>
         <Nav />
-        <main className="pb-20"><Outlet /></main>
-      </FavouritesProvider></AuthProvider>
+        <main className="overflow-x-hidden pb-32"><Outlet /></main>
+      <MiniPlayer /></PlayerProvider></FavouritesProvider></AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -19,18 +19,21 @@ export type Database = {
           added_at: string
           id: string
           playlist_id: string
+          song: Json | null
           song_id: string
         }
         Insert: {
           added_at?: string
           id?: string
           playlist_id: string
+          song?: Json | null
           song_id: string
         }
         Update: {
           added_at?: string
           id?: string
           playlist_id?: string
+          song?: Json | null
           song_id?: string
         }
         Relationships: [

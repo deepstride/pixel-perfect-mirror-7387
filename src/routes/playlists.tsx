@@ -4,7 +4,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Plus, Trash2, ListMusic, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { createPlaylist, deletePlaylist, fetchPlaylists, removeSong } from "@/lib/playlists";
-import { findSong } from "@/data/moods";
 import { SongCard } from "@/components/SongCard";
 
 export const Route = createFileRoute("/playlists")({
@@ -90,9 +89,8 @@ function Playlists() {
               <p className="mt-3 text-sm text-muted-foreground">Empty — find a song on <Link to="/" className="text-primary underline">Home</Link> or <Link to="/discover" className="text-primary underline">Discover</Link>.</p>
             ) : (
               <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {p.songIds.map((id) => {
-                  const song = findSong(id);
-                  if (!song) return null;
+                {p.songs.map((song) => {
+                  const id = song.id;
                   return (
                     <SongCard
                       key={id}

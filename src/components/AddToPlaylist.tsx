@@ -3,9 +3,11 @@ import { Link } from "@tanstack/react-router";
 import { ListPlus, Check } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
+import type { Song } from "@/data/moods";
 import { addSong, fetchPlaylists } from "@/lib/playlists";
 
-export function AddToPlaylist({ songId }: { songId: string }) {
+export function AddToPlaylist({ song }: { song: Song }) {
+  const songId = song.id;
   const { session } = useAuth();
   const [open, setOpen] = useState(false);
   const qc = useQueryClient();
@@ -21,7 +23,7 @@ export function AddToPlaylist({ songId }: { songId: string }) {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-label="Add to playlist"
-        className="shrink-0 rounded-full p-2 text-muted-foreground transition hover:bg-secondary hover:text-foreground"
+        className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-muted-foreground transition hover:bg-secondary hover:text-foreground"
       >
         <ListPlus className="h-5 w-5" />
       </button>
@@ -41,7 +43,7 @@ export function AddToPlaylist({ songId }: { songId: string }) {
                   key={p.id}
                   disabled={has}
                   onClick={async () => {
-                    await addSong(p.id, songId);
+                    await addSong(p.id, song);
                     qc.invalidateQueries({ queryKey: ["playlists"] });
                   }}
                   className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left hover:bg-secondary disabled:opacity-60"
